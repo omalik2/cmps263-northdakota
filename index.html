@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<head>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+</head>
+
+<body>
+    <style>
+        .button {
+            margin-left: 50px;
+        }
+
+    </style>
+
+
+    <h1 style="text-align: center">Population Density of North Dakota, 2016</h1>
+    <p id="option" style="text-align: center; margin-top: 50px">
+        <input id="colorButton" class="button" name="colorButton" type="button" value="Change Legend Color" onclick="changeLegendColor()" />
+
+        <input id="stateButton" class="button" name="stateButton" type="button" value="Toggle State Boundary" onclick="toggleStateBoundary()" />
+
+        <input id="censusButton" class="button" name="censusButton" type="button" value="Toggle Census Tracts" onclick="toggleCensusTracts()" />
+
+    </p>
+    <div>
+
+        <img id="visual" src="nd.svg" width="960" height="1100" style="margin-left: auto; margin-right: auto; display: block">
+
+    </div>
+
+    <!--    <svg width="960" height="600"></svg>-->
+
+
+    <script>
+        //        var svg = d3.select("svg");
+        //
+        //        var path = d3.geoPath();
+        //
+        //        d3.json("nd-merge-topo.json", function(error, nd) {
+        //            if (error) throw error;
+        //
+        //            console.log(nd);
+        //
+        //            svg.append("g")
+        //                .attr("class", "counties")
+        //                .selectAll("path")
+        //                .data(topojson.feature(nd, nd.objects.counties).features)
+        //                .enter().append("path")
+        //                .attr("d", path);
+        //
+        //            svg.append("path")
+        //                .attr("class", "county-borders")
+        //                .attr("d", path(topojson.mesh(nd, nd.objects.counties, function(a, b) {
+        //                    return a !== b;
+        //                })));
+        //        });
+
+
+
+        var color_flag = true,
+            boundary_flag = false,
+            tracts_flag = false;
+
+        function updateImage() {
+            var src = "nd"
+
+            // Check Color Flag
+            if (color_flag == false) {
+                src = src.concat("2");
+            }
+
+            // Check State Boundary Flag
+            if (boundary_flag == true) {
+                src = src.concat("-b");
+            }
+
+            // Check Tracts Flag
+            if (tracts_flag == true) {
+                if (boundary_flag == false)
+                    src = src.concat("-");
+                src = src.concat("t");
+            }
+
+            src = src.concat(".svg")
+
+            d3.select("#visual")
+                .attr("src", src);
+        }
+
+        function changeLegendColor() {
+            color_flag = !color_flag;
+            updateImage();
+        }
+
+        function toggleStateBoundary() {
+            boundary_flag = !boundary_flag;
+            updateImage();
+        }
+
+        function toggleCensusTracts() {
+            tracts_flag = !tracts_flag;
+            updateImage();
+        }
+
+    </script>
+
+</body>
